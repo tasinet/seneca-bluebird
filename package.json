@@ -1,0 +1,38 @@
+{
+  "name": "seneca-bluebird",
+  "version": "0.0.1",
+  "description": "Seneca support for promises (bluebird implementation).",
+  "main": "promisify.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rjrodger/seneca-basic"
+  },
+  "keywords": [
+    "seneca",
+    "plugin",
+    "promises",
+    "bluebird"
+  ],
+  "author": {
+    "name": "Tasos Bitsios",
+    "url": "http://tasinet.com"
+  },
+  "contributors": [
+    {
+        "name": "Tasos Bitsios",
+        "url": "http://tasinet.com"
+    }
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^2.3.11"
+  },
+  "devDependencies": {
+    "chai": "~1.9.1",
+    "mocha": "~1.20.1"
+  },
+  "files": [
+    "README.md",
+    "promisify.js"
+  ]
+}
