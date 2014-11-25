@@ -2,7 +2,5 @@
 
 ### Seneca promisified.
 
-Not working yet. Patience.
-
-
+[Somewhat/Not] working atmo. Don't use.
 
