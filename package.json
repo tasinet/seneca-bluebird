@@ -35,7 +35,7 @@
     "seneca-mem-store": ""
   },
   "files": [
-    "LICENSE.txt"
+    "LICENSE.txt",
     "README.md",
     "promisify.js"
   ]
