@@ -7,6 +7,25 @@ module.exports = function( options, done ) {
     var seneca = this,
         senecaProto = Object.getPrototypeOf(seneca);
 
+    //Required to promisify entity methods. Call early so we fail early if senecajs doesn't support exporting Entity
+    var Entity = seneca.export('Entity');
+    if (!Entity) {
+        seneca.log.fatal("Seneca must be modified to return Entity through .export() before seneca-bluebird can function properly.");
+        process.exit(1);
+    }
+
+    /** 
+     * Core stuff
+     *
+     * addAsync: register handler which returns promise
+     *
+     * actAsync: promisified .act()
+     *
+     * readyAsync: promisified .ready(). Returns seneca
+     *
+     * clientAsync: promisified .ready()->.client(). Returns client (which is seneca)
+     */
+
     senecaProto.addAsync = function() {
         var q = Promise.pending(),
             args = Array.prototype.slice.apply(arguments),
@@ -60,35 +79,52 @@ module.exports = function( options, done ) {
         return q.promise;
     };
 
-    senecaProto.clientAsync = function() {
-        this.readyAsync().then(function(self){
-            return self.client();
+    senecaProto.closeAsync = function() {
+        var q = Promise.pending();
+        this.ready(function(err){ 
+            err && q.reject(err) || q.resolve(1); //`this` is right: ready cb runs in seneca ctx
         });
+        return q.promise;
+    }
+
+    senecaProto.clientAsync = function() {
+        return this.readyAsync().call('client');
     };
 
+    /*
+     * Entity stuff
+     */
+
+    //var Entity = Entity exported by seneca (up top).
+
     var entityOverride = {
-        originalPrefix: '_sync_',
-        fields: [
+        fields: [       //these method fields will be promisified
             'save$',
             'native$',
             'load$',
             'list$',
             'remove$',
-            'close$',
+            //'close$', //not needed after all
         ],
+        originalPrefix: '_classic_', //original methods will be prefixed with this
     };
 
-
-
-    var Entity = seneca.export('Entity');
     //override the $entityOverride.fields method fields on Entity.prototype
         //prefix the original fn with entityOverride.originalPrefix
         //replace them with passthrough functions which return promisified version IF cb is missing
             //ASSUMPTION: cb is always last (seems to be the case at this point - v0.5.21)       
-    debugger;
+    
     entityOverride.fields.forEach(function(originalMethodName){
-        var originalReplacementName = entityOverride.originalPrefix + originalMethodName,
-            daFunc = Entity.prototype[originalReplacementName] = Entity.prototype[originalMethodName];
+        var originalReplacementName = entityOverride.originalPrefix + originalMethodName;
+        if (typeof Entity.prototype[originalMethodName] !== 'function') { 
+            seneca.log.fatal('Entity.prototype.'+originalMethodName+' not found. Mayhaps this is an old version of seneca?');
+            process.exit(1);
+        }
+        if (Entity.prototype[originalReplacementName]) { //this shouldnt exist. Are we being initialized twice? Strange.
+            seneca.log.warn('Possible double initialization in seneca-bluebird? (property Entity.prototype.'+originalReplacementName+' was unexpectedly truthy)');
+            return;
+        }
+        Entity.prototype[originalReplacementName] = Entity.prototype[originalMethodName];
         delete Entity.prototype[originalMethodName];
         Entity.prototype[originalMethodName] = overrideMeMaybe(originalReplacementName);
     });
@@ -100,11 +136,9 @@ module.exports = function( options, done ) {
             if (typeof lastArg !== 'function') {
                 var q = Promise.pending();
                 var cb = function(err, data) {
-                    debugger;
                     err && q.reject(err) || q.resolve(data);
                 };
                 args.push(cb);
-                debugger;
                 this[newName].apply(this, args);
                 return q.promise;
             } else

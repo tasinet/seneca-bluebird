@@ -2,5 +2,4 @@
 
 ### Seneca promisified.
 
-[Somewhat/Not] working atmo. Don't use.
-
+TODO writeup.

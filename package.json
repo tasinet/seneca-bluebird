@@ -1,11 +1,14 @@
 {
   "name": "seneca-bluebird",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Seneca support for promises (bluebird implementation).",
   "main": "promisify.js",
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha test/*.test.js"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/rjrodger/seneca-basic"
+    "url": "https://github.com/tasinet/seneca-bluebird"
   },
   "keywords": [
     "seneca",
@@ -28,10 +31,11 @@
     "bluebird": "^2.3.11"
   },
   "devDependencies": {
-    "chai": "~1.9.1",
-    "mocha": "~1.20.1"
+    "mocha": "",
+    "seneca-mem-store": ""
   },
   "files": [
+    "LICENSE.txt"
     "README.md",
     "promisify.js"
   ]
