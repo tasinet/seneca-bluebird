@@ -1,0 +1,10 @@
+--- seneca.js	2014-11-28 16:53:34.589117683 +0000
++++ seneca.js	2014-11-28 16:45:44.483027717 +0000
+@@ -1577,6 +1577,7 @@
+ 
+   // Template entity that makes all others.
+   private$.entity = new Entity({},sd)
++  private$.exports.Entity = Entity;
+ 
+ 
+   // DEPRECATED 

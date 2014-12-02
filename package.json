@@ -22,8 +22,8 @@
   },
   "contributors": [
     {
-        "name": "Tasos Bitsios",
-        "url": "http://tasinet.com"
+      "name": "Tasos Bitsios",
+      "url": "http://tasinet.com"
     }
   ],
   "license": "MIT",
@@ -31,8 +31,8 @@
     "bluebird": "^2.3.11"
   },
   "devDependencies": {
-    "mocha": "",
-    "seneca-mem-store": ""
+    "mocha": "^2.0.1",
+    "seneca-mem-store": "^0.1.1"
   },
   "files": [
     "LICENSE.txt",
