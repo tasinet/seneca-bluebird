@@ -38,6 +38,7 @@
   "files": [
     "LICENSE.txt",
     "README.md",
-    "promisify.js"
+    "promisify.js",
+    "lib.seneca.0.5.21.js.patch"
   ]
 }
