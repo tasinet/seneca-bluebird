@@ -61,7 +61,7 @@ module.exports = function( options, done ) {
             err ? q.reject(err) : q.resolve(out);
         });
         try {
-            this.act.apply(seneca, args);
+            this.act.apply(this, args);
         } catch(e) {
             if (e && e.code && !e.message) {
                 e.message = e.code;
