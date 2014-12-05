@@ -88,7 +88,7 @@ module.exports = function( options, done ) {
     };
 
     senecaProto.clientAsync = function() {
-        var args = Array.prototype.apply.slice(arguments);
+        var args = Array.prototype.slice.apply(arguments);
         return this.readyAsync().then(function(seneca){
             return seneca.client.apply(seneca, args);
         });
