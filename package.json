@@ -1,6 +1,6 @@
 {
   "name": "seneca-bluebird",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Seneca support for promises (bluebird implementation).",
   "main": "promisify.js",
   "scripts": {
