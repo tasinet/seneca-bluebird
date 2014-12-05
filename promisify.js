@@ -85,10 +85,13 @@ module.exports = function( options, done ) {
             err && q.reject(err) || q.resolve(1); //`this` is right: ready cb runs in seneca ctx
         });
         return q.promise;
-    }
+    };
 
     senecaProto.clientAsync = function() {
-        return this.readyAsync().call('client');
+        var args = Array.prototype.apply.slice(arguments);
+        return this.readyAsync().then(function(seneca){
+            return seneca.client.apply(seneca, args);
+        });
     };
 
     /*
