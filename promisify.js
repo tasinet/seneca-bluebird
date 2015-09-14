@@ -2,7 +2,7 @@
 var Promise = require('bluebird');
 var util = require('util');
 
-module.exports = function( options, done ) {
+module.exports = function( options ) {
 
     var seneca = this,
         senecaProto = Object.getPrototypeOf(seneca);
